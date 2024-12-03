@@ -50,3 +50,7 @@ _(run from <project folder>/supabase folder created by init command)_
 Start Supabase: `<project folder>/npx supabase start`
 
 Stop Supabase: `<project folder>/npx supabase stop`
+
+Display Supabase Instance Values:
+
+`<project folder>/npx supabase status`

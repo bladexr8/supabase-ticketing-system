@@ -1,7 +1,20 @@
+"use client";
+
 import Image from "next/image";
 import styles from "./page.module.css";
 
+import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
+import { useEffect } from "react";
+
 export default function Home() {
+  // test Supabase connection
+  useEffect(() => {
+    const supabase = getSupabaseBrowserClient();
+    supabase.storage.listBuckets().then((result) => {
+      console.log("Bucket List", result);
+    });
+  }, []);
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
