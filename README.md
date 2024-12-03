@@ -38,3 +38,15 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 ## Packtpub Source Code
 
 [https://github.com/PacktPublishing/Building-Production-Grade-Web-Applications-with-Supabase](https://github.com/PacktPublishing/Building-Production-Grade-Web-Applications-with-Supabase)
+
+## Supabase Commands
+
+Initialise Supabase for Project:
+
+`<project folder>/npx supabase init`
+
+_(run from <project folder>/supabase folder created by init command)_
+
+Start Supabase: `<project folder>/npx supabase start'
+
+Stop Supabase: `<project folder>/npx supabase stop'
