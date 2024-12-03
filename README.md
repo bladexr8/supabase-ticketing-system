@@ -47,6 +47,6 @@ Initialise Supabase for Project:
 
 _(run from <project folder>/supabase folder created by init command)_
 
-Start Supabase: `<project folder>/npx supabase start'
+Start Supabase: `<project folder>/npx supabase start`
 
-Stop Supabase: `<project folder>/npx supabase stop'
+Stop Supabase: `<project folder>/npx supabase stop`
