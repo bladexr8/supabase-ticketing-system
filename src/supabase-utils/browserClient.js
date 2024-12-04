@@ -1,4 +1,4 @@
-// utilities for working with Supabase
+// utilities for working with Supabase in a browser
 
 import { createBrowserClient } from "@supabase/ssr";
 
