@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export function TicketList({ tickets }) {
   return (
     <table>
@@ -14,7 +16,11 @@ export function TicketList({ tickets }) {
           return (
             <tr key={ticket.id}>
               <td>{ticket.id}</td>
-              <td>{ticket.title}</td>
+              <td>
+                <Link href={`/tickets/details/${ticket.id}`}>
+                  {ticket.title}
+                </Link>
+              </td>
               <td>{ticket.status}</td>
             </tr>
           );
