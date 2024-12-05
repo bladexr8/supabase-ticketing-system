@@ -1,13 +1,14 @@
 // utilities for working with Supabase in a next.js middleware
 
 import { createServerClient } from "@supabase/ssr";
+import { NextResponse } from "next/server";
 
 export const getSupabaseReqResClient = ({ request }) => {
   // create a response object that copies existing headers from
   // the incoming request to retain existing cookies for
   // whatever is rendered after the middleware
   let response = {
-    value: NextResponse.next({ request: request})
+    value: NextResponse.next({ request: request }),
   };
 
   const supabase = createServerClient(
@@ -34,4 +35,4 @@ export const getSupabaseReqResClient = ({ request }) => {
   // return Supabase client and response to be used
   // as a response object later
   return { supabase, response };
-}
+};
