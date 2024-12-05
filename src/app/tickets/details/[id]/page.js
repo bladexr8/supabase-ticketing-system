@@ -1,11 +1,13 @@
+import * as React from "react";
 import { TicketComments } from "./TicketComments";
 import classes from "./TicketDetails.module.css";
 
 export default function TicketDetailsPage({ params }) {
+  const { id } = React.use(params); 
   return (
     <article className={classes.ticketDetails}>
       <header>
-        <strong>#{params.id}</strong> -{" "}
+        <strong>#{id}</strong> -{" "}
         <strong className={classes.ticketStatusGreen}>Open</strong>
         <br />
         <small className={classes.authorAndDate}>

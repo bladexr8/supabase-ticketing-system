@@ -12,7 +12,7 @@ export function TicketList({ tickets }) {
       </thead>
       <tbody>
         {tickets.map((ticket) => {
-          console.log(ticket);
+          // console.log(ticket);
           return (
             <tr key={ticket.id}>
               <td>{ticket.id}</td>
