@@ -14,6 +14,7 @@ export default function Nav() {
   const router = useRouter();
 
   // listen to all events related to authentication
+  // detect a logout event
   useEffect(() => {
     const {
       data: { subscription },
