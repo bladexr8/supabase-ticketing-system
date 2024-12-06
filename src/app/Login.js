@@ -1,5 +1,7 @@
 "use client";
+import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 
 export const Login = ({ isPasswordLogin }) => {
@@ -7,12 +9,26 @@ export const Login = ({ isPasswordLogin }) => {
   // can be accessed when form submitted
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+  const supabase = getSupabaseBrowserClient();
+  const router = useRouter();
   return (
     <form
       onSubmit={(event) => {
         event.preventDefault();
         if (isPasswordLogin) {
-          alert("User wants to login with password");
+          //alert("User wants to login with password");
+          supabase.auth.signInWithPassword({
+            email: emailInputRef.current.value,
+            password: passwordInputRef.current.value,
+          })
+          .then((result) => {
+            if (result.data?.user) {
+              //alert("Successfully Signed In");
+              router.push("/tickets")
+            } else {
+              alert("Could Not Sign In");
+            }
+          });
         } else {
           alert("User wants to login with magic link");
         }
