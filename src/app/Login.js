@@ -1,20 +1,49 @@
 "use client";
+import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useRef, useEffect } from "react";
 
 export const Login = ({ isPasswordLogin }) => {
   // store a reference to email and password elements so they
   // can be accessed when form submitted
   const emailInputRef = useRef(null);
   const passwordInputRef = useRef(null);
+  const supabase = getSupabaseBrowserClient();
+  const router = useRouter();
+
+  // listen to all events related to authentication
+  // detect a login event
+  useEffect(() => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN") {
+        console.log("Successfully Signed In with Magic Link...");
+        router.push("/tickets");
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
   return (
     <form
+      method="POST"
+      action={isPasswordLogin ? "/auth/pw-login" : "/auth/magic-link"}
       onSubmit={(event) => {
-        event.preventDefault();
+        // if magic-link direct straight to backend
+        isPasswordLogin && event.preventDefault();
         if (isPasswordLogin) {
-          alert("User wants to login with password");
-        } else {
-          alert("User wants to login with magic link");
+          //alert("User wants to login with password");
+          supabase.auth.signInWithPassword({
+            email: emailInputRef.current.value,
+            password: passwordInputRef.current.value,
+          })
+          .then((result) => {
+            // login unsuccessful
+            !result.data?.user && alert("Could not sign in");
+          });
         }
       }}
     >

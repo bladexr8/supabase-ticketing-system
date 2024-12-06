@@ -5,21 +5,22 @@ import { createServerClient } from "@supabase/ssr";
 import { cookies } from  "next/headers";
 
 export const getSupabaseCookiesUtilClient = () => {
-  const cookieStore = cookies();
 
   return createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     {
       cookies: {
-        getAll() {
-          return cookieStore.getAll();
+        async getAll() {
+          const cookieStore = await cookies();
+          return await cookieStore.getAll();
         },
       
-        setAll(cookiesToSet) {
+        async setAll(cookiesToSet) {
+          const cookieStore = await cookies();
           try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
+            cookiesToSet.forEach(async ({ name, value, options }) => {
+              await cookieStore.set(name, value, options);
             });
           } catch (err) {
             console.error("Failed to set cookies", err);
