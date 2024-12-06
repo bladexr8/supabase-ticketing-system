@@ -13,6 +13,8 @@ export const Login = ({ isPasswordLogin }) => {
   const router = useRouter();
   return (
     <form
+      method="POST"
+      action="/auth/pw-login"
       onSubmit={(event) => {
         event.preventDefault();
         if (isPasswordLogin) {
