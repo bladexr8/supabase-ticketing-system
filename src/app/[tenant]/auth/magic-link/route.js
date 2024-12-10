@@ -1,12 +1,16 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdminClient } from "@/supabase-utils/adminClient";
 import nodemailer from "nodemailer";
+import { buildUrl } from "@/utils/url-helpers";
 
 // server side authentication
-export async function POST(request) {
+export async function POST(request, { params }) {
   const formData = await request.formData();
   const email = formData.get("email");
   const supabaseAdmin = getSupabaseAdminClient();
+  const { tenant } = await params;
+
+  const tenantUrl = (path) => buildUrl(path, tenant, request);
 
   // generate a magic link
   const { data: linkData, error } = await supabaseAdmin.auth.admin.generateLink(
@@ -17,10 +21,7 @@ export async function POST(request) {
   );
 
   if (error) {
-    return NextResponse.redirect(
-      new URL("/error?type=magiclink", request.url),
-      302
-    );
+    return NextResponse.redirect(tenantUrl("/error?type=magiclink"), 302);
   }
 
   // workaround to delete a new user, if created in lieu of
@@ -39,9 +40,8 @@ export async function POST(request) {
   const { hashed_token } = linkData.properties;
 
   // construct custom link
-  const constructedLink = new URL(
-    `/auth/verify?hashed_token=${hashed_token}`,
-    request.url
+  const constructedLink = tenantUrl(
+    `/auth/verify?hashed_token=${hashed_token}`
   );
 
   // send magic link email
@@ -61,6 +61,6 @@ export async function POST(request) {
   });
 
   // successful
-  const thanksUrl = new URL("/magic-thanks", request.url);
+  const thanksUrl = tenantUrl("/magic-thanks");
   return NextResponse.redirect(thanksUrl, 302);
 }
