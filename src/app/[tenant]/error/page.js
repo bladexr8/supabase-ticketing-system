@@ -1,7 +1,9 @@
+import { urlPath } from "@/utils/url-helpers";
 import Link from "next/link";
 
-export default async function ErrorPage({ searchParams }) {
+export default async function ErrorPage({ searchParams, params }) {
   const { type } = await searchParams;
+  const { tenant } = await params;
   const knownErrors = ["login-failed", "magiclink", "invalid_magiclink"];
 
   return (
@@ -26,7 +28,7 @@ export default async function ErrorPage({ searchParams }) {
       <br />
       <br />
 
-      <Link role="button" href="/">
+      <Link role="button" href={urlPath("/", tenant)}>
         Go Back
       </Link>
     </div>

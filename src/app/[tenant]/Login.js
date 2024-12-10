@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useEffect } from "react";
 
-export const Login = ({ isPasswordLogin }) => {
+export const Login = ({ tenant, tenantName, isPasswordLogin }) => {
   // store a reference to email and password elements so they
   // can be accessed when form submitted
   const emailInputRef = useRef(null);
@@ -20,7 +20,7 @@ export const Login = ({ isPasswordLogin }) => {
     } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_IN") {
         console.log("Successfully Signed In with Magic Link...");
-        router.push("/tickets");
+        router.push(`/${tenant}`);
       }
     });
 
@@ -30,25 +30,34 @@ export const Login = ({ isPasswordLogin }) => {
   return (
     <form
       method="POST"
-      action={isPasswordLogin ? "/auth/pw-login" : "/auth/magic-link"}
+      action={
+        isPasswordLogin
+          ? urlPath("/auth/pw-login", tenant)
+          : urlPath("/auth/magic-link", tenant)
+      }
       onSubmit={(event) => {
         // if magic-link direct straight to backend
         isPasswordLogin && event.preventDefault();
         if (isPasswordLogin) {
           //alert("User wants to login with password");
-          supabase.auth.signInWithPassword({
-            email: emailInputRef.current.value,
-            password: passwordInputRef.current.value,
-          })
-          .then((result) => {
-            // login unsuccessful
-            !result.data?.user && alert("Could not sign in");
-          });
+          supabase.auth
+            .signInWithPassword({
+              email: emailInputRef.current.value,
+              password: passwordInputRef.current.value,
+            })
+            .then((result) => {
+              // login unsuccessful
+              !result.data?.user && alert("Could not sign in");
+            });
         }
       }}
     >
       <article style={{ maxWidth: "420px", margin: "auto" }}>
-        <header>Login</header>
+        <header>
+          <div style={{ display: "block", fontSize: "0.7em" }}>
+            {tenantName}
+          </div>
+        </header>
 
         <fieldset>
           <label htmlFor="email">
@@ -77,11 +86,21 @@ export const Login = ({ isPasswordLogin }) => {
 
         <p>
           {isPasswordLogin ? (
-            <Link href={{ pathname: "/", query: { magicLink: "yes" } }}>
+            <Link
+              href={{
+                pathname: urlPath("/", tenant),
+                query: { magicLink: "yes" },
+              }}
+            >
               Go to Magic Link Login
             </Link>
           ) : (
-            <Link href={{ pathname: "/", query: { magicLink: "no" } }}>
+            <Link
+              href={{
+                pathname: urlPath("/", tenant),
+                query: { magicLink: "no" },
+              }}
+            >
               Go to Password Login
             </Link>
           )}

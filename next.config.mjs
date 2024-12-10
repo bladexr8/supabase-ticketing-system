@@ -1,10 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  redirects: async() => [
+  redirects: async () => [
     {
-      source: "/logout",
-      destination: "/auth/logout",
-      permanent: true
+      source: "/:tenant/logout",
+      destination: "/:tenant/auth/logout",
+      permanent: true,
     },
   ],
 };
