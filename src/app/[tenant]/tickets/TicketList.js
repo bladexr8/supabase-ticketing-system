@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { urlPath } from "@/utils/url-helpers";
 
 export function TicketList({ tickets, tenant }) {
   return (

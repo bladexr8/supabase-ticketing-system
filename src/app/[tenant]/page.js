@@ -1,11 +1,14 @@
 import { getSupabaseAdminClient } from "@/supabase-utils/adminClient";
 import * as React from "react";
+import { notFound } from "next/navigation";
 
 import { Login } from "./Login";
 
 export default async function LoginPage({ searchParams, params }) {
   const { magicLink } = await searchParams;
   const { tenant } = await params;
+
+  console.log(`tenant = ${tenant}`);
 
   // check if tenant exists in database
   const supabaseAdmin = getSupabaseAdminClient();
@@ -16,6 +19,7 @@ export default async function LoginPage({ searchParams, params }) {
     .single();
 
   if (error) {
+    console.log(`@error (${tenant})`, error);
     return notFound();
   }
 

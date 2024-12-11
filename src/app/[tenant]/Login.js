@@ -3,6 +3,7 @@ import { getSupabaseBrowserClient } from "@/supabase-utils/browserClient";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, useEffect } from "react";
+import { urlPath } from "@/utils/url-helpers";
 
 export const Login = ({ tenant, tenantName, isPasswordLogin }) => {
   // store a reference to email and password elements so they
