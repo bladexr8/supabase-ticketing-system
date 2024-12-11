@@ -10,7 +10,7 @@ export default function TenantName(props) {
         }}
       >
         Ticket System
-        <strong style={{ marginLeft: "1ex" }}>{props.tenantName}</strong>
+        <strong style={{ marginLeft: "1ex" }}>{props.tenant}</strong>
       </div>
     </header>
   );
